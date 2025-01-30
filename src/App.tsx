@@ -1,9 +1,10 @@
-import HomeScreen from "@/screens/home/home";
-
+import { lazy } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import UserRoute from "./routes/user.route";
 import PublicRoute from "./routes/public.route";
-import LoginScreen from "./screens/login/login";
+
+const LoginScreen = lazy(() => import("@/screens/login/login"));
+const HomeScreen = lazy(() => import("@/screens/course-list/course-list"));
 
 function App() {
   return (

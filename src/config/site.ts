@@ -1,16 +1,8 @@
-export type SiteConfig = typeof siteConfig
+export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Next.js",
+  name: "CloseIQ",
   description:
-    "Beautifully designed components built with Radix UI and Tailwind CSS.",
-  mainNav: [
-    {
-      title: "Home",
-      href: "/",
-    },
-  ],
-  links: {
-    github: "https://github.com/alanjames00",
-  },
-}
+    "Your AI-powered sales training companion. Get personalized coaching, real-time feedback, and interactive role-playing to sharpen your pitch, overcome objections, and close deals faster. 🚀",
+  mainNav: [],
+};
