@@ -12,7 +12,7 @@ export const Layout = ({ children }: RootLayoutProps) => {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div className="relative flex min-h-screen flex-col">
           <SiteHeader />
-          <div className="flex-1">{children}</div>
+          <div className="flex flex-col flex-1">{children}</div>
         </div>
         <TailwindIndicator />
       </ThemeProvider>
