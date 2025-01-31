@@ -3,8 +3,8 @@ import { Button } from "../ui/button";
 import { Icons } from "../icons";
 import axios from "axios";
 import { toast } from "sonner";
-import { Howl, Howler } from "howler";
 import BubbleLoader from "../ui/bubble-loader";
+import { Howl, Howler } from "howler";
 
 interface ChatProps {
   moveNext: () => void;
@@ -20,7 +20,8 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
   const [chatLoading, setChatLoading] = useState(false);
 
   const startChat = async () => {
-    await axios.get(`http://localhost:3000/chat/${currentChat}/initiate`);
+    const apiUrl = import.meta.env.VITE_API_URL;
+    await axios.get(`${apiUrl}/chat/${currentChat}/initiate`);
     setChatStarted(true);
   };
 
@@ -47,11 +48,11 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
     setChatLoading(true);
     setMessages((prev) => [...prev, { role: "You", content: message }]);
     setMessage("");
+    const apiUrl = import.meta.env.VITE_API_URL;
     try {
-      const res = await axios.post(
-        `http://localhost:3000/chat/${currentChat}/message`,
-        { message: message }
-      );
+      const res = await axios.post(`${apiUrl}/chat/${currentChat}/message`, {
+        message: message,
+      });
       setMessages(res.data.messages);
       setChatLoading(false);
     } catch {

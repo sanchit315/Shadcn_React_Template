@@ -5,12 +5,10 @@ import { Spinner } from "@/components/ui/loader";
 import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 export default function CourseListScreen() {
-  const {
-    data: courseListRes,
-    error,
-    isLoading,
-  } = useSWR("http://localhost:3000/courses");
+  const { data: courseListRes, error, isLoading } = useSWR(`${apiUrl}/courses`);
 
   const navigate = useNavigate();
 

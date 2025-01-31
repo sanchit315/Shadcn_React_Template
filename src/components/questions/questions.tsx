@@ -7,6 +7,8 @@ import useSWR from "swr";
 import { QuestionType } from "@/enums/questions.enum";
 import DragAndDropQuestion from "./drag-and-drop-question";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 interface QuestionsProps {
   moveNext: () => void;
 }
@@ -19,12 +21,9 @@ const Questions: React.FC<QuestionsProps> = ({ moveNext }) => {
     data: questionRes,
     error,
     isLoading,
-  } = useSWR(
-    `http://localhost:3000/question/${questionIndexArray[currentQuestionIndex]}`,
-    {
-      revalidateOnFocus: false,
-    }
-  );
+  } = useSWR(`${apiUrl}/question/${questionIndexArray[currentQuestionIndex]}`, {
+    revalidateOnFocus: false,
+  });
 
   if (error) {
     return <p>Error loading data</p>;

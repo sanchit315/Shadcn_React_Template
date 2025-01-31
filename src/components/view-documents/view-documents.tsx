@@ -2,6 +2,9 @@ import { Button } from "../ui/button";
 import Markdown from "react-markdown";
 import "@/styles/markdown.css";
 import useSWR from "swr";
+import { Spinner } from "../ui/loader";
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 interface ViewDocumentsProps {
   skipQuiz: () => void;
@@ -12,9 +15,14 @@ const ViewDocuments: React.FC<ViewDocumentsProps> = ({
   skipQuiz,
   startQuiz,
 }) => {
-  const { data: readingMaterialRes } = useSWR(
-    "http://localhost:3000/reading-material"
-  );
+  const {
+    data: readingMaterialRes,
+    error,
+    isLoading,
+  } = useSWR(`${apiUrl}/reading-material`);
+
+  if (error) return <div>Error Something went wrong</div>;
+  if (isLoading) return <Spinner />;
 
   const readingMaterial = readingMaterialRes.readingMaterial;
 

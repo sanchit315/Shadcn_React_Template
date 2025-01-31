@@ -43,21 +43,19 @@ const CourseCreateScreen = () => {
   const navigate = useNavigate();
 
   const handleCreateCourse = async (values: any) => {
-    const url = "http://localhost:3000/";
+    const apiUrl = import.meta.env.VITE_API_URL;
+
     try {
       const newData = { courseName: values.courseName };
 
       await mutate(
-        url + "course/create",
-        uploadCourse(url + "course/create", newData),
-        {
-          optimisticData: newData,
-          rollbackOnError: true,
-        }
+        apiUrl + "course/create",
+        uploadCourse(apiUrl + "course/create", newData),
+        { optimisticData: newData, rollbackOnError: true }
       );
       await mutate(
-        url + `upload/${values.courseName}`,
-        uploadCourseFiles(url + `upload/${values.courseName}`, values.files)
+        apiUrl + `upload/${values.courseName}`,
+        uploadCourseFiles(apiUrl + `upload/${values.courseName}`, values.files)
       );
 
       navigate("/");
