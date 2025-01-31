@@ -1,6 +1,7 @@
 import { Button } from "../ui/button";
 import Markdown from "react-markdown";
 import "@/styles/markdown.css";
+import useSWR from "swr";
 
 interface ViewDocumentsProps {
   skipQuiz: () => void;
@@ -11,44 +12,13 @@ const ViewDocuments: React.FC<ViewDocumentsProps> = ({
   skipQuiz,
   startQuiz,
 }) => {
-  const markdown = `
-# Table of Contents Test
+  const { data: readingMaterialRes } = useSWR(
+    "http://localhost:3000/reading-material"
+  );
 
-## Introduction
-A brief introduction to the document.
+  const readingMaterial = readingMaterialRes.readingMaterial;
 
-## Getting Started
-How to begin using this guide.
-
-### Installation
-Steps to install the necessary components.
-
-### Configuration
-Setting up and configuring the environment.
-
-## Features
-A list of key features.
-
-### Core Features
-- Fast performance  
-- Easy integration  
-- Responsive design  
-
-### Advanced Features
-- Customizable themes  
-- Plugin support  
-
-## Usage
-How to use the system effectively.
-
-### Basic Usage
-Simple use cases for beginners.
-
-### Pro Tips
-Advanced techniques for power users.
-
-## Conclusion
-Final thoughts and next steps.`;
+  const markdown = readingMaterial;
 
   return (
     <div className="flex-1 flex flex-col mt-12">
@@ -56,8 +26,8 @@ Final thoughts and next steps.`;
         <Markdown className="markdown-body">{markdown}</Markdown>
       </div>
 
-      <div className="flex align-middle justify-end">
-        <div className="flex gap-6">
+      <div className="flex align-middle justify-end fixed bottom-0 right-0 left-0 bg-white border border-t-gray-100 py-2">
+        <div className="container flex gap-6 justify-end">
           <Button variant="outline" onClick={skipQuiz}>
             Skip Quiz
           </Button>

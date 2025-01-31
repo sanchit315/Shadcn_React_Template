@@ -5,17 +5,14 @@ import Questions from "@/components/questions/questions";
 import Chat from "@/components/chat/chat";
 
 const QuizScreen = () => {
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(1);
+
   const steps = [
     "Policy and process",
     "Process Training",
     "AI Client Training",
     "Certificate",
   ];
-
-  const handleEndQuiz = () => {
-    console.log("Quiz End");
-  };
 
   const handleSkipQuiz = () => {
     setCurrentStep((prev) => prev + 1);
