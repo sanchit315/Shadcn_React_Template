@@ -42,7 +42,6 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
       return;
     }
     setCurrentQuestionIndex((prev) => prev + 1);
-    console.log(answers);
   };
 
   const handleOptionsChange = (answer: string[]) => {

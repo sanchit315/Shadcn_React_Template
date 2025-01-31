@@ -2,9 +2,10 @@ import Stepper from "@/components/ui/stepper";
 import { useState } from "react";
 import ViewDocuments from "@/components/view-documents/view-documents";
 import Questions from "@/components/questions/questions";
+import Chat from "@/components/chat/chat";
 
 const QuizScreen = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(3);
   const steps = [
     "Policy and process",
     "Process Training",
@@ -35,8 +36,8 @@ const QuizScreen = () => {
           startQuiz={handleStartQuiz}
         />
       )}
-
       {currentStep === 2 && <Questions endQuiz={handleEndQuiz} />}
+      {currentStep === 3 && <Chat endQuiz={handleEndQuiz} />}
     </section>
   );
 };
