@@ -3,11 +3,27 @@ import SingleQuestion from "./single-question";
 import MultiSelectQuestion from "./multi-select-question";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/loader";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { QuestionType } from "@/enums/questions.enum";
 import DragAndDropQuestion from "./drag-and-drop-question";
 
 const apiUrl = import.meta.env.VITE_API_URL;
+
+const uploadAnswers = async (url: string, data: object) => {
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to post data");
+  }
+
+  return response.json();
+};
 
 interface QuestionsProps {
   moveNext: () => void;
@@ -39,17 +55,28 @@ const Questions: React.FC<QuestionsProps> = ({ moveNext }) => {
   const question = questionRes.question;
   const totalCount = 5;
 
-  const handleNextQuestion = () => {
+  const handleNextQuestion = async () => {
     if (currentQuestionIndex === totalCount - 1) {
+      mutate(
+        `${apiUrl}/answers`,
+        uploadAnswers(`${apiUrl}/answers`, {
+          answers: Object.entries(answers).reduce(
+            (acc, curr) => [...acc, { index: curr[0], answer: curr[1] }],
+            [] as { index: string; answer: string[] }[]
+          ),
+        })
+      );
       moveNext();
-      console.log(answers);
       return;
     }
     setCurrentQuestionIndex((prev) => prev + 1);
   };
 
   const handleOptionsChange = (answer: string[]) => {
-    setAnswers((prev) => ({ ...prev, [currentQuestionIndex]: answer }));
+    setAnswers((prev) => ({
+      ...prev,
+      [questionIndexArray[currentQuestionIndex]]: answer,
+    }));
   };
 
   const renderQuestion = () => {

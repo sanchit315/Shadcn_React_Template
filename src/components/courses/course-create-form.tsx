@@ -42,7 +42,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = ({ onSubmit }) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-8 min-w-full mx-auto py-10"
+        className="space-y-8 min-w-full mx-auto"
       >
         <FormField
           control={form.control}
