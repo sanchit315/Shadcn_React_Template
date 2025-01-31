@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -65,7 +64,7 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = ({ onSubmit }) => {
         <FormField
           control={form.control}
           name="files"
-          render={({ field }) => (
+          render={() => (
             <FormItem>
               <FormLabel>File</FormLabel>
               <FormControl>

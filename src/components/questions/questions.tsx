@@ -42,6 +42,7 @@ const Questions: React.FC<QuestionsProps> = ({ moveNext }) => {
   const handleNextQuestion = () => {
     if (currentQuestionIndex === totalCount - 1) {
       moveNext();
+      console.log(answers);
       return;
     }
     setCurrentQuestionIndex((prev) => prev + 1);

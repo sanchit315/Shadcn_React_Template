@@ -4,7 +4,7 @@ import { Icons } from "../icons";
 import axios from "axios";
 import { toast } from "sonner";
 import BubbleLoader from "../ui/bubble-loader";
-import { Howl, Howler } from "howler";
+// import { Howl, Howler } from "howler";
 
 interface ChatProps {
   moveNext: () => void;
