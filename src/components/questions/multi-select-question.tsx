@@ -40,17 +40,19 @@ const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
 
   return (
     <>
-      <p className="text-sm text-gray-600 mb-2">
+      <div className="text-primary bg-purple-100 text-xs font-medium px-3 py-1 rounded-md mb-2 max-w-fit">
         {QuestionTypeMapper[questionType]}
-      </p>
-      <Markdown className={"mb-12"}>{question}</Markdown>
+      </div>
+      <Markdown
+        className={"mb-12"}
+      >{`**Question ${questionNumber.toString()})** ${question}`}</Markdown>
 
       <div className="flex flex-col gap-4 max-w-lg">
         {Object.entries(options).map(([key, option]) => (
           <Option
             key={key}
             optionKey={key}
-            option={option}
+            option={`${key}) ${option}`}
             selectedKeys={selectedKeys}
             onOptionClick={handleOptionClick}
           />
