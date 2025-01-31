@@ -4,7 +4,7 @@ import Option from "./option";
 interface MultiSelectQuestionProps {
   questionNumber: number;
   question: string;
-  options: string[];
+  options: Record<string, string>;
 }
 
 const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
@@ -31,14 +31,18 @@ const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
 
   return (
     <>
-      <h3 className="text-lg font-bold mb-12">
-        Question {questionNumber}: {question}
-      </h3>
+      <h3
+        className="text-lg font-bold mb-12"
+        dangerouslySetInnerHTML={{
+          __html: `Question ${questionNumber}: ${question}`,
+        }}
+      ></h3>
 
       <div className="flex flex-col gap-4 max-w-lg">
-        {options.map((option) => (
+        {Object.entries(options).map(([key, option]) => (
           <Option
-            option={option}
+            key={key}
+            option={`${key}) ${option}`}
             selectedOption={selectedOption}
             onOptionClick={handleOptionClick}
           />

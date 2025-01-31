@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { questions } from "@/screens/quiz/quiz-data";
 import SingleQuestion from "./single-question";
 import MultiSelectQuestion from "./multi-select-question";
 import { Button } from "../ui/button";
+import { Spinner } from "../ui/loader";
+import useSWR from "swr";
 
 interface QuestionsProps {
   endQuiz: () => void;
@@ -10,7 +11,24 @@ interface QuestionsProps {
 
 const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const question = questions[currentQuestionIndex];
+  const {
+    data: questionRes,
+    error,
+    isLoading,
+  } = useSWR(`http://localhost:3000/question/${currentQuestionIndex}`, {
+    revalidateOnFocus: false,
+  });
+
+  if (error) return <p>Error loading data</p>;
+  if (isLoading)
+    return (
+      <div className="flex-1 flex flex-col mt-12">
+        <Spinner />
+      </div>
+    );
+
+  const question = questionRes.question.question;
+  const totalCount = question.totalCount;
 
   const renderQuestion = () => {
     switch (question.type) {
@@ -37,8 +55,8 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
   };
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex === questions.length - 1) {
-      //
+    if (currentQuestionIndex === totalCount) {
+      // Todo: Move to chat screen
       return;
     }
     setCurrentQuestionIndex((prev) => prev + 1);
@@ -49,7 +67,7 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
       <div className="flex-1 mb-4"> {renderQuestion()}</div>
 
       <div className="flex align-middle justify-between">
-        <Button variant="outline" onClick={endQuiz}>
+        <Button variant="destructive" onClick={endQuiz}>
           End Quiz
         </Button>
         <Button variant="default" onClick={handleNextQuestion}>
