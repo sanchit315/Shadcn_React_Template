@@ -1,42 +1,23 @@
 import CourseCard from "@/components/courses/course-item";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/loader";
 import { useNavigate } from "react-router-dom";
+import useSWR from "swr";
 
 export default function CourseListScreen() {
-  const coursesList = [
-    {
-      title: "AM Sales 101",
-      description: "Introduction to AM sales strategies and techniques.",
-    },
-    {
-      title: "VO Sales 101",
-      description: "Learn effective VO sales methods and customer handling.",
-    },
-    {
-      title: "Day Pass Sales 101",
-      description:
-        "Basic concepts of selling day passes and customer engagement.",
-    },
-    {
-      title: "Day Pass Sales 101",
-      description:
-        "Basic concepts of selling day passes and customer engagement.",
-    },
-
-    {
-      title: "Day Pass Sales 101",
-      description:
-        "Basic concepts of selling day passes and customer engagement.",
-    },
-    {
-      title: "Day Pass Sales 101",
-      description:
-        "Basic concepts of selling day passes and customer engagement.",
-    },
-  ];
+  const {
+    data: courseListRes,
+    error,
+    isLoading,
+  } = useSWR("http://localhost:3000/courses");
 
   const navigate = useNavigate();
+
+  if (error) return <div>Error occurred</div>;
+  if (isLoading) return <Spinner />;
+
+  const coursesList: string[] = courseListRes.courses;
 
   const navigateToQuiz = (quizId: string) => () => {
     navigate(`quiz/${quizId}`);
@@ -61,12 +42,12 @@ export default function CourseListScreen() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-        {coursesList.map((course) => (
+        {coursesList.map((title) => (
           <CourseCard
-            key={course.title}
-            title={course.title}
-            description={course.description}
-            onClick={navigateToQuiz(course.title)}
+            key={title}
+            title={title}
+            description="Created 09:14 AM"
+            onClick={navigateToQuiz(title)}
           />
         ))}
       </div>
