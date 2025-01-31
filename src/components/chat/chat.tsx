@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { Icons } from "../icons";
 import axios from "axios";
 import { toast } from "sonner";
 import BubbleLoader from "../ui/bubble-loader";
-// import { Howl, Howler } from "howler";
+import { Howl } from "howler";
 
 interface ChatProps {
   moveNext: () => void;
@@ -17,7 +17,9 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
   const [messages, setMessages] = useState<{ role: string; content: string }[]>(
     []
   );
+  const [isEnd, setIsEnd] = useState(false);
   const [chatLoading, setChatLoading] = useState(false);
+  const sound = useRef<Howl | null>(null);
 
   const startChat = async () => {
     const apiUrl = import.meta.env.VITE_API_URL;
@@ -25,23 +27,18 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
     setChatStarted(true);
   };
 
-  const handleEndChat = () => {
-    // const sound = new Howl({
-    //   src: ["http://localhost:3000/file_example_MP3_5MG.mp3"],
-    //   autoplay: true,
-    //   loop: false,
-    //   volume: 1,
-    //   onplay: () => {
-    //     console.log("PlAY");
-    //   },
-    // });
-
+  const handleEndChat = async () => {
     if (currentChat === 2) {
       moveNext();
       return;
     }
     setCurrentChat((prev) => prev + 1);
     setChatStarted(false);
+    setMessage("");
+    setMessages([]);
+    setIsEnd(false);
+    setChatLoading(false);
+    sound.current?.stop();
   };
 
   const handleSendMessage = async () => {
@@ -53,9 +50,17 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
       const res = await axios.post(`${apiUrl}/chat/${currentChat}/message`, {
         message: message,
       });
+      setIsEnd(res.data.isEnd);
+      sound.current = new Howl({
+        src: [`${apiUrl}/${res.data.audioFileName}`],
+        autoplay: true,
+        loop: false,
+        volume: 1,
+      });
+      sound.current.play();
       setMessages(res.data.messages);
       setChatLoading(false);
-    } catch {
+    } catch (error) {
       toast.error("Something went wrong!, please try later");
       setChatLoading(false);
     }
@@ -118,7 +123,10 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                 />
-                <Button onClick={handleSendMessage} disabled={chatLoading}>
+                <Button
+                  onClick={handleSendMessage}
+                  disabled={chatLoading || isEnd}
+                >
                   Send
                 </Button>
               </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import ViewDocuments from "@/components/view-documents/view-documents";
 import Questions from "@/components/questions/questions";
 import Chat from "@/components/chat/chat";
+import Evaluation from "@/components/evaluation/evaluation";
 
 const QuizScreen = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -31,6 +32,7 @@ const QuizScreen = () => {
       )}
       {currentStep === 2 && <Questions moveNext={handleStartQuiz} />}
       {currentStep === 3 && <Chat moveNext={handleStartQuiz} />}
+      {currentStep === 4 && <Evaluation />}
     </section>
   );
 };
