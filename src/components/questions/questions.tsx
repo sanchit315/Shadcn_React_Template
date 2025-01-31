@@ -13,6 +13,7 @@ interface QuestionsProps {
 
 const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const {
     data: questionRes,
     error,
@@ -33,7 +34,20 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
   }
 
   const question = questionRes.question;
-  const totalCount = questionRes.totalCount;
+  const totalCount = question.totalCount;
+
+  const handleNextQuestion = () => {
+    if (currentQuestionIndex === totalCount) {
+      // Todo: Move to chat screen
+      return;
+    }
+    setCurrentQuestionIndex((prev) => prev + 1);
+    console.log(answers);
+  };
+
+  const handleOptionsChange = (answer: string[]) => {
+    setAnswers((prev) => ({ ...prev, [currentQuestionIndex]: answer }));
+  };
 
   const renderQuestion = () => {
     switch (question.type) {
@@ -43,7 +57,9 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
           <SingleQuestion
             questionNumber={currentQuestionIndex + 1}
             question={question.question}
+            questionType={question.type}
             options={question.options}
+            optionChange={handleOptionsChange}
           />
         );
       case QuestionType.MULTI_SELECT:
@@ -52,6 +68,8 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
             questionNumber={currentQuestionIndex + 1}
             question={question.question}
             options={question.options}
+            questionType={question.type}
+            optionChange={handleOptionsChange}
           />
         );
       case QuestionType.ORDERING:
@@ -60,19 +78,13 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
             questionNumber={currentQuestionIndex + 1}
             question={question.question}
             options={question.options}
+            questionType={question.type}
+            optionChange={handleOptionsChange}
           />
         );
       default:
         return null;
     }
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex === totalCount) {
-      // Todo: Move to chat screen
-      return;
-    }
-    setCurrentQuestionIndex((prev) => prev + 1);
   };
 
   return (
