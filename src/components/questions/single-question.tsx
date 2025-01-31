@@ -4,7 +4,7 @@ import Option from "./option";
 interface SingleQuestionProps {
   questionNumber: number;
   question: string;
-  options: string[];
+  options: Record<string, string>;
 }
 
 const SingleQuestion: React.FC<SingleQuestionProps> = ({
@@ -25,9 +25,9 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
       </h3>
 
       <div className="flex flex-col gap-4 max-w-lg">
-        {options.map((option) => (
+        {Object.entries(options).map(([key, option]) => (
           <Option
-            key={option}
+            key={key}
             option={option}
             selectedOption={selectedOption}
             onOptionClick={handleOptionClick}

@@ -42,7 +42,7 @@ const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
         {Object.entries(options).map(([key, option]) => (
           <Option
             key={key}
-            option={`${key}) ${option}`}
+            option={option}
             selectedOption={selectedOption}
             onOptionClick={handleOptionClick}
           />
