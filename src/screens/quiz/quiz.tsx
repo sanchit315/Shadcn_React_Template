@@ -36,8 +36,12 @@ const QuizScreen = () => {
           startQuiz={handleStartQuiz}
         />
       )}
-      {currentStep === 2 && <Questions endQuiz={handleEndQuiz} />}
-      {currentStep === 3 && <Chat endQuiz={handleEndQuiz} />}
+      {currentStep === 2 && (
+        <Questions endQuiz={handleEndQuiz} moveNext={handleStartQuiz} />
+      )}
+      {currentStep === 3 && (
+        <Chat endQuiz={handleEndQuiz} moveNext={handleStartQuiz} />
+      )}
     </section>
   );
 };

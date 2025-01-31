@@ -1,6 +1,6 @@
 import { Button } from "../ui/button";
 import Markdown from "react-markdown";
-import "./view-documents.css";
+import "@/styles/markdown.css";
 
 interface ViewDocumentsProps {
   endQuiz: () => void;

@@ -2,6 +2,7 @@ import { QuestionType, QuestionTypeMapper } from "@/enums/questions.enum";
 import React from "react";
 import { Draggable } from "react-drag-reorder";
 import Markdown from "react-markdown";
+import "@/styles/markdown.css";
 
 interface DragAndDropQuestionProps {
   questionNumber: number;
@@ -28,9 +29,7 @@ const DragAndDropQuestion: React.FC<DragAndDropQuestionProps> = ({
       <div className="text-primary bg-purple-100 text-xs font-medium px-3 py-1 rounded-md mb-2 max-w-fit">
         {QuestionTypeMapper[questionType]}
       </div>
-      <Markdown
-        className={"mb-12"}
-      >{`**Question ${questionNumber.toString()})** ${question}`}</Markdown>
+      <Markdown className="markdown-body mb-12">{`**Question ${questionNumber.toString()})** ${question}`}</Markdown>
 
       <div className="flex flex-col gap-4 max-w-lg">
         <Draggable onPosChange={getChangedPos}>

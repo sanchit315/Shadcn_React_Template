@@ -18,7 +18,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
     >
       <img
         className="w-full h-48 object-cover"
-        src="https://via.placeholder.com/300"
+        src="/image.png"
         alt="Card Image"
       />
       <div className="py-4 px-2">

@@ -9,18 +9,23 @@ import DragAndDropQuestion from "./drag-and-drop-question";
 
 interface QuestionsProps {
   endQuiz: () => void;
+  moveNext: () => void;
 }
 
-const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
+const Questions: React.FC<QuestionsProps> = ({ endQuiz, moveNext }) => {
+  const questionIndexArray = [10, 16, 3, 12, 4];
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const {
     data: questionRes,
     error,
     isLoading,
-  } = useSWR(`http://localhost:3000/question/${currentQuestionIndex}`, {
-    revalidateOnFocus: false,
-  });
+  } = useSWR(
+    `http://localhost:3000/question/${questionIndexArray[currentQuestionIndex]}`,
+    {
+      revalidateOnFocus: false,
+    }
+  );
 
   if (error) {
     return <p>Error loading data</p>;
@@ -34,11 +39,12 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
   }
 
   const question = questionRes.question;
-  const totalCount = question.totalCount;
+  const totalCount = 5;
 
   const handleNextQuestion = () => {
-    if (currentQuestionIndex === totalCount) {
-      // Todo: Move to chat screen
+    if (currentQuestionIndex === totalCount - 1) {
+      console.log(answers);
+      moveNext();
       return;
     }
     setCurrentQuestionIndex((prev) => prev + 1);

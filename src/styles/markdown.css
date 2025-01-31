@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Markdown Styling */
+.markdown-body {
+  @apply prose prose-lg max-w-none text-gray-800 dark:text-gray-300;
+}
+
+/* Custom Headings */
+.markdown-body h1 {
+  @apply text-4xl font-bold text-gray-900 dark:text-white mb-4;
+}
+
+.markdown-body h2 {
+  @apply text-3xl font-semibold text-gray-800 dark:text-gray-200 mt-8 mb-3;
+}
+
+.markdown-body h3 {
+  @apply text-2xl font-semibold text-gray-700 dark:text-gray-300 mt-6 mb-2;
+}
+
+.markdown-body p {
+  @apply text-lg leading-relaxed text-gray-600 dark:text-gray-400;
+}
+
+/* Code Blocks */
+.markdown-body pre {
+  @apply bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto;
+}
+
+.markdown-body code {
+  @apply bg-gray-200 text-red-600 px-1 py-0.5 rounded;
+}
+
+/* Lists */
+.markdown-body ul {
+  @apply list-disc pl-6 space-y-2;
+}
+
+.markdown-body ol {
+  @apply list-decimal pl-6 space-y-2;
+}
+
+.markdown-body li {
+  @apply text-lg;
+}
+
+/* Blockquotes */
+.markdown-body blockquote {
+  @apply border-l-4 border-gray-500 pl-4 italic text-gray-700 dark:text-gray-300;
+}
+
+/* Tables */
+.markdown-body table {
+  @apply w-full border-collapse border border-gray-300;
+}
+
+.markdown-body th, .markdown-body td {
+  @apply border border-gray-300 px-4 py-2;
+}
+
+.markdown-body th {
+  @apply bg-gray-100 dark:bg-gray-800 font-semibold;
+}

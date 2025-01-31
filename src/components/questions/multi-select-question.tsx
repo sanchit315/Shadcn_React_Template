@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Option from "./option";
 import Markdown from "react-markdown";
 import { QuestionType, QuestionTypeMapper } from "@/enums/questions.enum";
+import "@/styles/markdown.css";
 
 interface MultiSelectQuestionProps {
   questionNumber: number;
@@ -43,9 +44,9 @@ const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
       <div className="text-primary bg-purple-100 text-xs font-medium px-3 py-1 rounded-md mb-2 max-w-fit">
         {QuestionTypeMapper[questionType]}
       </div>
-      <Markdown
-        className={"mb-12"}
-      >{`**Question ${questionNumber.toString()})** ${question}`}</Markdown>
+      <Markdown className="markdown-body mb-12">
+        {`**Question ${questionNumber.toString()})** ${question}`}
+      </Markdown>
 
       <div className="flex flex-col gap-4 max-w-lg">
         {Object.entries(options).map(([key, option]) => (
