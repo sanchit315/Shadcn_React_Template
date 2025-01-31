@@ -8,11 +8,10 @@ import { QuestionType } from "@/enums/questions.enum";
 import DragAndDropQuestion from "./drag-and-drop-question";
 
 interface QuestionsProps {
-  endQuiz: () => void;
   moveNext: () => void;
 }
 
-const Questions: React.FC<QuestionsProps> = ({ endQuiz, moveNext }) => {
+const Questions: React.FC<QuestionsProps> = ({ moveNext }) => {
   const questionIndexArray = [10, 16, 3, 12, 4];
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
@@ -43,7 +42,6 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz, moveNext }) => {
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex === totalCount - 1) {
-      console.log(answers);
       moveNext();
       return;
     }
@@ -96,10 +94,7 @@ const Questions: React.FC<QuestionsProps> = ({ endQuiz, moveNext }) => {
     <div className="flex-1 flex flex-col mt-12">
       <div className="flex-1 mb-4"> {renderQuestion()}</div>
 
-      <div className="flex align-middle justify-between">
-        <Button variant="destructive" onClick={endQuiz}>
-          End Quiz
-        </Button>
+      <div className="flex align-middle justify-end">
         <Button variant="default" onClick={handleNextQuestion}>
           Next Question
         </Button>

@@ -3,13 +3,14 @@ import { Button } from "../ui/button";
 import { Icons } from "../icons";
 import axios from "axios";
 import { toast } from "sonner";
+import { Howl, Howler } from "howler";
+import BubbleLoader from "../ui/bubble-loader";
 
 interface ChatProps {
-  endQuiz: () => void;
   moveNext: () => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ endQuiz, moveNext }) => {
+const Chat: React.FC<ChatProps> = ({ moveNext }) => {
   const [currentChat, setCurrentChat] = useState(0);
   const [chatStarted, setChatStarted] = useState(false);
   const [message, setMessage] = useState("");
@@ -24,22 +25,33 @@ const Chat: React.FC<ChatProps> = ({ endQuiz, moveNext }) => {
   };
 
   const handleEndChat = () => {
+    // const sound = new Howl({
+    //   src: ["http://localhost:3000/file_example_MP3_5MG.mp3"],
+    //   autoplay: true,
+    //   loop: false,
+    //   volume: 1,
+    //   onplay: () => {
+    //     console.log("PlAY");
+    //   },
+    // });
+
     if (currentChat === 2) {
       moveNext();
       return;
     }
-
     setCurrentChat((prev) => prev + 1);
+    setChatStarted(false);
   };
 
   const handleSendMessage = async () => {
     setChatLoading(true);
+    setMessages((prev) => [...prev, { role: "You", content: message }]);
+    setMessage("");
     try {
       const res = await axios.post(
         `http://localhost:3000/chat/${currentChat}/message`,
         { message: message }
       );
-      setMessage("");
       setMessages(res.data.messages);
       setChatLoading(false);
     } catch {
@@ -57,15 +69,17 @@ const Chat: React.FC<ChatProps> = ({ endQuiz, moveNext }) => {
         </div>
 
         <div className="flex-1 flex justify-between">
-          <Button className="flex gap-2" onClick={startChat}>
-            <Icons.messageSquare className="h-4 w-4" />
-            Start Chat
-          </Button>
+          {!chatStarted && (
+            <Button className="flex gap-2" onClick={startChat}>
+              <Icons.messageSquare className="h-4 w-4" />
+              Start Chat
+            </Button>
+          )}
 
           {chatStarted && (
-            <div className="w-full max-w-md bg-white rounded-md shadow-lg flex flex-col overflow-hidden max-h-[450px]">
+            <div className="w-full max-w-xl bg-white rounded-md shadow-lg flex flex-col overflow-hidden max-h-[450px]">
               <div className="p-4 border-b bg-primary text-white font-semibold text-lg">
-                Chat your client Rajat Khaturia
+                Chat with your client
               </div>
               <div className="p-4 flex-1 overflow-y-auto" id="chatBox">
                 {messages.map((message) => {
@@ -87,6 +101,12 @@ const Chat: React.FC<ChatProps> = ({ endQuiz, moveNext }) => {
                     </div>
                   );
                 })}
+
+                {chatLoading && (
+                  <div className="bg-gray-200 p-2 rounded-md inline-block">
+                    <BubbleLoader />
+                  </div>
+                )}
               </div>
               <div className="p-4 border-t flex gap-2">
                 <input
@@ -106,10 +126,7 @@ const Chat: React.FC<ChatProps> = ({ endQuiz, moveNext }) => {
         </div>
       </div>
 
-      <div className="flex align-middle justify-between">
-        <Button variant="destructive" onClick={endQuiz}>
-          End Quiz
-        </Button>
+      <div className="flex align-middle justify-end">
         <Button
           variant="default"
           disabled={!chatStarted}

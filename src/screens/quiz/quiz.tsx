@@ -5,7 +5,7 @@ import Questions from "@/components/questions/questions";
 import Chat from "@/components/chat/chat";
 
 const QuizScreen = () => {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(3);
   const steps = [
     "Policy and process",
     "Process Training",
@@ -30,18 +30,10 @@ const QuizScreen = () => {
       <Stepper steps={steps} currentStep={currentStep} />
 
       {currentStep === 1 && (
-        <ViewDocuments
-          endQuiz={handleEndQuiz}
-          skipQuiz={handleSkipQuiz}
-          startQuiz={handleStartQuiz}
-        />
+        <ViewDocuments skipQuiz={handleSkipQuiz} startQuiz={handleStartQuiz} />
       )}
-      {currentStep === 2 && (
-        <Questions endQuiz={handleEndQuiz} moveNext={handleStartQuiz} />
-      )}
-      {currentStep === 3 && (
-        <Chat endQuiz={handleEndQuiz} moveNext={handleStartQuiz} />
-      )}
+      {currentStep === 2 && <Questions moveNext={handleStartQuiz} />}
+      {currentStep === 3 && <Chat moveNext={handleStartQuiz} />}
     </section>
   );
 };

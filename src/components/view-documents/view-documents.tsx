@@ -3,13 +3,11 @@ import Markdown from "react-markdown";
 import "@/styles/markdown.css";
 
 interface ViewDocumentsProps {
-  endQuiz: () => void;
   skipQuiz: () => void;
   startQuiz: () => void;
 }
 
 const ViewDocuments: React.FC<ViewDocumentsProps> = ({
-  endQuiz,
   skipQuiz,
   startQuiz,
 }) => {
@@ -58,10 +56,7 @@ Final thoughts and next steps.`;
         <Markdown className="markdown-body">{markdown}</Markdown>
       </div>
 
-      <div className="flex align-middle justify-between">
-        <Button variant="outline" onClick={endQuiz}>
-          End Quiz
-        </Button>
+      <div className="flex align-middle justify-end">
         <div className="flex gap-6">
           <Button variant="outline" onClick={skipQuiz}>
             Skip Quiz
