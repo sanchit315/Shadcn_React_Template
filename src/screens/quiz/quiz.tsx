@@ -2,6 +2,7 @@ import Stepper from "@/components/ui/stepper";
 import { questions } from "./quiz-data";
 import { useState } from "react";
 import SingleQuestion from "@/components/questions/single-question";
+import MultiSelectQuestion from "@/components/questions/multi-select-question";
 
 const QuizScreen = () => {
   const steps = [
@@ -11,7 +12,7 @@ const QuizScreen = () => {
     "Certificate",
   ];
 
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(2);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const question = questions[currentQuestionIndex];
 
   const renderQuestion = () => {
@@ -32,7 +33,14 @@ const QuizScreen = () => {
             options={question.options}
           />
         );
-
+      case "MULTI_SELECT":
+        return (
+          <MultiSelectQuestion
+            questionNumber={currentQuestionIndex + 1}
+            question={question.question}
+            options={question.options}
+          />
+        );
       default:
         return null;
     }

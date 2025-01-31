@@ -1,21 +1,32 @@
 import React, { useState } from "react";
 import Option from "./option";
 
-interface SingleQuestionProps {
+interface MultiSelectQuestionProps {
   questionNumber: number;
   question: string;
   options: string[];
 }
 
-const SingleQuestion: React.FC<SingleQuestionProps> = ({
-  questionNumber,
+const MultiSelectQuestion: React.FC<MultiSelectQuestionProps> = ({
   options,
   question,
+  questionNumber,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<null | string>(null);
+  const [selectedOption, setSelectedOption] = useState<null | string[]>(null);
 
   const handleOptionClick = (answer: string) => {
-    setSelectedOption(answer);
+    setSelectedOption((prev) => {
+      if (prev) {
+        const findIndex = prev.findIndex((v) => v === answer);
+        if (findIndex !== -1) {
+          return prev.filter((v) => v !== answer);
+        } else {
+          return [...prev, answer];
+        }
+      } else {
+        return [answer];
+      }
+    });
   };
 
   return (
@@ -27,7 +38,6 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
       <div className="flex flex-col gap-4 max-w-lg">
         {options.map((option) => (
           <Option
-            key={option}
             option={option}
             selectedOption={selectedOption}
             onOptionClick={handleOptionClick}
@@ -38,4 +48,4 @@ const SingleQuestion: React.FC<SingleQuestionProps> = ({
   );
 };
 
-export default SingleQuestion;
+export default MultiSelectQuestion;
