@@ -13,35 +13,27 @@ interface QuestionsProps {
 
 const Questions: React.FC<QuestionsProps> = ({ endQuiz }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  // const {
-  //   data: questionRes,
-  //   error,
-  //   isLoading,
-  // } = useSWR(`http://localhost:3000/question/${currentQuestionIndex}`, {
-  //   revalidateOnFocus: false,
-  // });
+  const {
+    data: questionRes,
+    error,
+    isLoading,
+  } = useSWR(`http://localhost:3000/question/${currentQuestionIndex}`, {
+    revalidateOnFocus: false,
+  });
 
-  // if (error) return <p>Error loading data</p>;
-  // if (isLoading)
-  //   return (
-  //     <div className="flex-1 flex flex-col mt-12">
-  //       <Spinner />
-  //     </div>
-  //   );
+  if (error) {
+    return <p>Error loading data</p>;
+  }
+  if (isLoading) {
+    return (
+      <div className="flex-1 flex flex-col mt-12">
+        <Spinner />
+      </div>
+    );
+  }
 
-  const question = {
-    question:
-      "As a sales representative, you need to follow up with a lead who has shortlisted workspace options from myHQ. What would be the appropriate steps to schedule a visit for the lead to tour the facilities?",
-    type: "ORDERING",
-    options: {
-      a: "Send a follow-up email to the lead, inquiring about their availability for a visit and suggesting potential dates/times.",
-      b: "Confirm the visit details with the lead, including the date, time, and location(s).",
-      c: "If the lead does not respond to the initial follow-up, send additional reminders to ensure they are still interested and willing to schedule a visit.",
-      d: "Once the lead confirms their availability, send a calendar invitation with the visit details for their reference.",
-    },
-    answer: ["a", "c", "b", "d"],
-  };
-  const totalCount = 10;
+  const question = questionRes.question;
+  const totalCount = questionRes.totalCount;
 
   const renderQuestion = () => {
     switch (question.type) {
