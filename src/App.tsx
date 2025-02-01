@@ -2,11 +2,13 @@ import { lazy } from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import UserRoute from "./routes/user.route";
 import PublicRoute from "./routes/public.route";
-import QuizScreen from "./screens/quiz/quiz";
-import CourseCreateScreen from "./screens/course-create/course-create";
 
 const LoginScreen = lazy(() => import("@/screens/login/login"));
 const HomeScreen = lazy(() => import("@/screens/course-list/course-list"));
+const QuizScreen = lazy(() => import("./screens/quiz/quiz"));
+const CourseCreateScreen = lazy(
+  () => import("./screens/course-create/course-create")
+);
 
 function App() {
   return (
