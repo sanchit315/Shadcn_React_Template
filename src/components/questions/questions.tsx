@@ -30,7 +30,7 @@ interface QuestionsProps {
 }
 
 const Questions: React.FC<QuestionsProps> = ({ moveNext }) => {
-  const questionIndexArray = [10, 16, 3, 12, 4];
+  const questionIndexArray = [10, 16, 17, 18, 15];
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
   const {

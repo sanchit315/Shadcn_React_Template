@@ -5,12 +5,21 @@ import axios from "axios";
 import { toast } from "sonner";
 import BubbleLoader from "../ui/bubble-loader";
 import { Howl } from "howler";
+import useSWR from "swr";
+import { Spinner } from "../ui/loader";
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 interface ChatProps {
   moveNext: () => void;
 }
 
 const Chat: React.FC<ChatProps> = ({ moveNext }) => {
+  const {
+    data: leadStages,
+    error,
+    isLoading,
+  } = useSWR(`${apiUrl}/chat/lead_stages`);
   const [currentChat, setCurrentChat] = useState(0);
   const [chatStarted, setChatStarted] = useState(false);
   const [message, setMessage] = useState("");
@@ -21,8 +30,15 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
   const [chatLoading, setChatLoading] = useState(false);
   const sound = useRef<Howl | null>(null);
 
+  if (error) return <div>Error, Something went wrong</div>;
+  if (isLoading)
+    return (
+      <div className="mt-12">
+        <Spinner />
+      </div>
+    );
+
   const startChat = async () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
     await axios.get(`${apiUrl}/chat/${currentChat}/initiate`);
     setChatStarted(true);
   };
@@ -69,16 +85,24 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
   return (
     <div className="flex-1 flex flex-col mt-12">
       <div className="flex-1 mb-4 flex flex-col">
-        <div className="font-bold mb-12">
-          Question 6: Please Complete requirement form during discussion with AI
-          agent
+        <div className="mb-12">
+          <div className="font-bold mb-2">
+            Question {6 + currentChat}: Contact the lead below and follow the
+            SOP for:
+          </div>
+          <p className="text-sm text-gray-800">
+            Info: Current lead status {"=>"} {leadStages[currentChat].type}
+          </p>
+          <p className="text-sm text-gray-800">
+            Goal: Move the lead to {"=>"} {leadStages[currentChat + 1].type}
+          </p>
         </div>
 
         <div className="flex-1 flex justify-between">
           {!chatStarted && (
             <Button className="flex gap-2" onClick={startChat}>
-              <Icons.messageSquare className="h-4 w-4" />
-              Start Chat
+              <Icons.phone className="h-4 w-4" />
+              Contact Lead
             </Button>
           )}
 
@@ -129,20 +153,18 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
                 >
                   Send
                 </Button>
+
+                <Button
+                  variant="destructive"
+                  disabled={!chatStarted}
+                  onClick={handleEndChat}
+                >
+                  <Icons.phone />
+                </Button>
               </div>
             </div>
           )}
         </div>
-      </div>
-
-      <div className="flex align-middle justify-end">
-        <Button
-          variant="default"
-          disabled={!chatStarted}
-          onClick={handleEndChat}
-        >
-          End Chat
-        </Button>
       </div>
     </div>
   );

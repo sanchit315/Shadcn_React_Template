@@ -19,7 +19,7 @@ const ViewDocuments: React.FC<ViewDocumentsProps> = ({
     data: readingMaterialRes,
     error,
     isLoading,
-  } = useSWR(`${apiUrl}/reading-material`);
+  } = useSWR(`${apiUrl}/reading_material`);
 
   if (error) return <div>Error Something went wrong</div>;
   if (isLoading) return <Spinner />;
