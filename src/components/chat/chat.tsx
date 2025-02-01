@@ -41,6 +41,7 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
     error,
     isLoading,
   } = useSWR(`${apiUrl}/chat/lead_stages`);
+  const [leadName, setLeadName] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   const [currentChat, setCurrentChat] = useState(0);
   const [chatStarted, setChatStarted] = useState(false);
@@ -63,7 +64,8 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
   const transitions = transformStages(leadStages);
 
   const startChat = async () => {
-    await axios.get(`${apiUrl}/chat/${currentChat}/initiate`);
+    const res = await axios.get(`${apiUrl}/chat/${currentChat}/initiate`);
+    setLeadName(res.data.leadName);
     setChatStarted(true);
   };
 
@@ -228,7 +230,7 @@ const Chat: React.FC<ChatProps> = ({ moveNext }) => {
             {chatStarted && (
               <div className="w-full max-w-xl bg-white rounded-md shadow-lg flex flex-col overflow-hidden max-h-[420px] flex-1">
                 <div className="p-4 border-b bg-primary text-white font-semibold text-lg">
-                  Chat with your client
+                  Chat with {leadName} (AI client)
                 </div>
                 <div className="p-4 flex-1 overflow-y-auto" id="chatBox">
                   {messages.map((message) => {
