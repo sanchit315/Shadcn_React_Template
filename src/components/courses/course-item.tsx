@@ -19,6 +19,18 @@ const CourseCard: React.FC<CourseCardProps> = ({
 
   const randomIndex = Math.floor(Math.random() * 3);
 
+  const getTitle = () => {
+    if (title === "AM_myHQ") {
+      return "Assisted Marketplace sales course";
+    }
+
+    if (title === "VO_myHQ") {
+      return " Virtual Office sales course";
+    }
+
+    return title;
+  };
+
   return (
     <div
       className="rounded-lg overflow-hidden shadow-md border border-gray-300 cursor-pointer"
@@ -30,7 +42,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         alt="Card Image"
       />
       <div className="py-4 px-2">
-        <h2 className="text-sm font-bold text-gray-900">{title}</h2>
+        <h2 className="text-sm font-bold text-gray-900">{getTitle()}</h2>
         <p className="text-xs text-gray-500 mt-1">{description}</p>
       </div>
     </div>
