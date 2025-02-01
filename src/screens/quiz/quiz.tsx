@@ -6,7 +6,7 @@ import Chat from "@/components/chat/chat";
 import Evaluation from "@/components/evaluation/evaluation";
 
 const QuizScreen = () => {
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(1);
 
   const steps = [
     "Policy and process",
